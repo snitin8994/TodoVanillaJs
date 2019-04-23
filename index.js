@@ -1,7 +1,7 @@
 const addItemInput = document.querySelector('.additem-input')
 const listContainer = document.querySelector('.list-container')
 
-document.addEventListener('click', (e) => {
+const SaveAfterEdit = e => {
   let element = e.target.closest('.list__edit')
   if (element) return
   let editInput = document.querySelector('.list__edit')
@@ -14,7 +14,7 @@ document.addEventListener('click', (e) => {
   taskDelete.classList.toggle('hide')
   taskCheckBox.classList.toggle('invisible')
   taskItem.removeChild(editInput)
-})
+}
 
 const createDomElement = tag => document.createElement(tag)
 
@@ -88,7 +88,7 @@ const editItem = e => {
   taskCheckBox.classList.toggle('invisible')
   const editInput = createDomElement('input')
   setElementAttibutes(editInput, { class: 'list__edit', value: taskPara.innerText, type: 'text' })
-  editInput.addEventListener('keydown', afterEdit)
+
   /* after edit
   change para contnet
   toggle para class
@@ -96,11 +96,15 @@ const editItem = e => {
   toggle taskcheckbox class
   */
   taskList.appendChild(editInput)
+  editInput.addEventListener('keydown', afterEdit)
+  document.addEventListener('click', SaveAfterEdit)
 }
 
 const addItem = e => {
   if (e.key !== 'Enter') return
   let text = addItemInput.value
+  if (text.trim() === '') return
+  addItemInput.value = ''
   const taskItem = addTaskFunctionality(createDomElement('li'), text)
   listContainer.appendChild(taskItem)
 }

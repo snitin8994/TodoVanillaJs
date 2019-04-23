@@ -1,51 +1,81 @@
 html {
-    font-size: 62.5%;
+  font-size: 62.5%;
 }
 
 *,
 *::after,
 *::before {
-    box-sizing: border-box;
-    margin: 0;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 .header {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.header .additem-input {
+  flex: 1 1 100%;
+  max-width: 50rem;
+  border: 0.4rem solid rgba(175, 47, 47, 0.15);
+  padding: 1rem;
+  font-size: 2.4rem;
+  font-family: "Roboto", sans-serif;
+  box-shadow: -1px -1px 13px -5px rgba(0, 0, 0, 0.64);
 }
 
 .header__title {
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 8rem;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 8rem;
+  flex: 1 1 100%;
+  text-align: center;
+  color: rgba(175, 47, 47, 0.15);
+  margin-bottom: 1.4rem;
 }
 
+main {
+    max-width: 960px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.list-container {
+    padding: 0 0.3rem;
+}
 
 .list {
-    list-style-type: none;
-    display: flex;
-    justify-content: space-between
+  list-style-type: none;
+  display: flex;
+  font-size: 2.4rem;
+  font-family: "Roboto", sans-serif;
+  justify-content: space-between;
+  border: 0.4rem solid rgba(175, 47, 47, 0.15);
+  padding: 1rem;
 }
 
-.list__deleteButton{
-    display: none;
-    width: 20px;
-    height: 20px;
-    background-color: red;
+.list__deleteButton {
+  display: none;
+  width: 2rem;
+  height: 2rem;
+  background-color: red;
 }
 
 .list:hover .list__deleteButton {
-    display: initial;
+  display: initial;
 }
 .list:hover .list__deleteButton.hide {
-    display: none;
+  display: none;
 }
 
-
 .hide {
-    display: none
+  display: none;
 }
 
 .invisible {
-    visibility: hidden;
+  visibility: hidden;
 }
