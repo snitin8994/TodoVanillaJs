@@ -14,8 +14,9 @@ const SaveAfterEdit = e => {
   taskPara.innerText = editInput.value
   taskPara.classList.toggle('hide')
   taskDelete.classList.toggle('hide')
-  taskCheckBox.classList.toggle('invisible')
+  taskCheckBox.classList.toggle('hide')
   taskItem.removeChild(editInput)
+  document.removeEventListener("click", SaveAfterEdit)
 }
 
 const createDomElement = tag => document.createElement(tag)
@@ -99,8 +100,9 @@ const afterEdit = e => {
   taskPara.innerText = editInput.value
   taskPara.classList.toggle('hide')
   taskDelete.classList.toggle('hide')
-  taskCheckBox.classList.toggle('invisible')
+  taskCheckBox.classList.toggle('hide')
   taskItem.removeChild(editInput)
+  document.removeEventListener("click", SaveAfterEdit)
 }
 
 const editItem = e => {
@@ -112,7 +114,7 @@ const editItem = e => {
   console.log(taskCheckBox, taskDelete)
   taskPara.classList.toggle('hide')
   taskDelete.classList.toggle('hide')
-  taskCheckBox.classList.toggle('invisible')
+  taskCheckBox.classList.toggle('hide')
   const editInput = createDomElement('input')
   setElementAttibutes(editInput, { class: 'list__edit', value: taskPara.innerText, type: 'text' })
 

@@ -93,6 +93,14 @@ main {
   flex-shrink: 0;
 }
 
+.list__edit {
+    flex: 1 1 auto;
+    border: 0.2rem solid black;
+    font-family: "Roboto", sans-serif;
+    font-size: 2.4rem;
+    padding: 1rem;
+}
+
 .list:hover .list__deleteButton {
   visibility: initial;
 }
