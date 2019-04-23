@@ -1,0 +1,27 @@
+html {
+    font-size: 62.5%;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.header__title {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 8rem;
+}
+
+
+.list {
+    list-style-type: none;
+
+}
