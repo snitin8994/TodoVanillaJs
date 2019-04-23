@@ -66,8 +66,8 @@ main {
 }
 
 .list__checkbox {
-  width: 3.2rem;
-  height: 3.2rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: 100%;
   border: 0.2rem solid black;
   position: relative;
@@ -77,8 +77,8 @@ main {
 
 .list__tick {
   position: absolute;
-  top: -5%;
-  left: 3%;
+  top: 14%;
+  left: 18%;
   width: 0.5rem;
   height: 0.5rem;
   color: green;
@@ -86,7 +86,7 @@ main {
 
 .list__deleteButton {
   visibility: hidden;
-  font-size: 3rem;
+  font-size: 3.8rem;
   color: black;
   flex-shrink: 0;
 }
