@@ -1,29 +1,55 @@
-let addItemInput = document.querySelector(".additem-input");
-let listContainer = document.querySelector(".list-container");
+const addItemInput = document.querySelector('.additem-input')
+const listContainer = document.querySelector('.list-container')
 
-const createDomElement = tag => document.createElement(tag);
+const createDomElement = tag => document.createElement(tag)
 
-const setElementAttibutes = (element,attributes) => {
-    Object.keys(attributes).forEach((key)=> {
-        element.setAttribute(key,attributes[key])
-    })
-    return element
+const setElementAttibutes = (element, attributes) => {
+  Object.keys(attributes).forEach(key => {
+    element.setAttribute(key, attributes[key])
+  })
+  return element
+}
+
+const appendMultipleChild = (parent, child) => {
+  child.forEach(element => {
+    parent.appendChild(element)
+  })
 }
 
 const addTaskFunctionality = (elem, text) => {
-
-  elem = setElementAttibutes(elem,{
-      class: "list"
+  setElementAttibutes(elem, {
+    class: 'list'
   })
-  let taskCheckBox = createDomElement("input");
- 
-};
+  const taskCheckBox = createDomElement('input')
+  setElementAttibutes(taskCheckBox, {
+    type: 'checkbox',
+    class: 'list__checkbox'
+  })
+  const taskPara = createDomElement('p')
+  taskPara.innerText = text
+  setElementAttibutes(taskPara, {
+    class: 'list__task'
+  })
+
+  const deleteButton = createDomElement('div')
+  setElementAttibutes(deleteButton, {
+    class: 'list__deleteButton'
+  })
+
+  deleteButton.addEventListener('click', () => {
+    listContainer.removeChild(elem)
+  })
+
+  appendMultipleChild(elem, [taskCheckBox, taskPara, deleteButton])
+
+  return elem
+}
 
 const addItem = e => {
-  if (e.key !== "Enter") return;
-  let text = addItemInput.value;
-  let taskItem = addTaskFunctionality(createDomElement("li"), text);
-  listContainer.appendChild(taskItem);
-};
+  if (e.key !== 'Enter') return
+  let text = addItemInput.value
+  const taskItem = addTaskFunctionality(createDomElement('li'), text)
+  listContainer.appendChild(taskItem)
+}
 
-addItemInput.addEventListener("keydown", addItem);
+addItemInput.addEventListener('keydown', addItem)

@@ -1,0 +1,22 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snitin8994/TodoVanillaJs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snitin8994/TodoVanillaJs/issues"
+  },
+  "homepage": "https://github.com/snitin8994/TodoVanillaJs#readme",
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
+}
