@@ -1,10 +1,12 @@
 const addItemInput = document.querySelector('.additem-input')
 const listContainer = document.querySelector('.list-container')
 
+// for outiside clicks when editing list
 const SaveAfterEdit = e => {
   let element = e.target.closest('.list__edit')
   if (element) return
   let editInput = document.querySelector('.list__edit')
+  console.log(editInput)
   const taskItem = editInput.parentNode
   const taskCheckBox = taskItem.querySelector('.list__checkbox')
   const taskDelete = taskItem.querySelector('.list__deleteButton')
@@ -31,15 +33,37 @@ const appendMultipleChild = (parent, child) => {
   })
 }
 
+const onCheckBoxClick = (e) => {
+  let taskCheckBox = e.currentTarget
+  let taskTickButton = taskCheckBox.querySelector('.list__tick')
+  if (taskCheckBox.dataset.checked === 'true') {
+    taskCheckBox.dataset.checked = 'false'
+  } else {
+    taskCheckBox.dataset.checked = 'true'
+  }
+  taskTickButton.classList.toggle('hide')
+}
+
+const createTickButton = elem => {
+  let tickButton = createDomElement('div')
+  tickButton.innerHTML = '&#10003'
+  tickButton.setAttribute('class', 'list__tick hide')
+  elem.appendChild(tickButton)
+}
+
 const addTaskFunctionality = (elem, text) => {
   setElementAttibutes(elem, {
     class: 'list'
   })
-  const taskCheckBox = createDomElement('input')
+  const taskCheckBox = createDomElement('div')
+  taskCheckBox.dataset.checked = 'false'
   setElementAttibutes(taskCheckBox, {
-    type: 'checkbox',
     class: 'list__checkbox'
   })
+
+  createTickButton(taskCheckBox)
+
+  taskCheckBox.addEventListener('click', onCheckBoxClick)
   const taskPara = createDomElement('p')
   taskPara.innerText = text
   setElementAttibutes(taskPara, {
@@ -47,6 +71,7 @@ const addTaskFunctionality = (elem, text) => {
   })
 
   const deleteButton = createDomElement('div')
+  deleteButton.innerHTML = '&#9747'
   setElementAttibutes(deleteButton, {
     class: 'list__deleteButton'
   })
