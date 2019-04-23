@@ -23,15 +23,29 @@ html {
 
 .list {
     list-style-type: none;
+    display: flex;
+    justify-content: space-between
 }
 
 .list__deleteButton{
     display: none;
-    width: 100px;
-    height: 100px;
+    width: 20px;
+    height: 20px;
     background-color: red;
 }
 
 .list:hover .list__deleteButton {
-    display: block;
+    display: initial;
+}
+.list:hover .list__deleteButton.hide {
+    display: none;
+}
+
+
+.hide {
+    display: none
+}
+
+.invisible {
+    visibility: hidden;
 }

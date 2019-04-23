@@ -40,9 +40,47 @@ const addTaskFunctionality = (elem, text) => {
     listContainer.removeChild(elem)
   })
 
+  elem.addEventListener('dblclick', editItem)
+
   appendMultipleChild(elem, [taskCheckBox, taskPara, deleteButton])
 
   return elem
+}
+
+const afterEdit = e => {
+  if (e.key !== 'Enter') return
+  const editInput = e.target
+  const taskItem = editInput.parentNode
+  const taskCheckBox = taskItem.querySelector('.list__checkbox')
+  const taskDelete = taskItem.querySelector('.list__deleteButton')
+  const taskPara = taskItem.querySelector('.list__task')
+  taskPara.innerText = editInput.value
+  taskPara.classList.toggle('hide')
+  taskDelete.classList.toggle('hide')
+  taskCheckBox.classList.toggle('invisible')
+  taskItem.removeChild(editInput)
+}
+
+const editItem = e => {
+  if (e.target.tagName !== 'P') return
+  const taskList = e.target.parentNode
+  const taskPara = e.target
+  const taskCheckBox = taskList.querySelector('.list__checkbox')
+  const taskDelete = taskList.querySelector('.list__deleteButton')
+  console.log(taskCheckBox, taskDelete)
+  taskPara.classList.toggle('hide')
+  taskDelete.classList.toggle('hide')
+  taskCheckBox.classList.toggle('invisible')
+  const editInput = createDomElement('input')
+  setElementAttibutes(editInput, { class: 'list__edit', value: taskPara.innerText, type: 'text' })
+  editInput.addEventListener('keydown', afterEdit)
+  /* after edit
+  change para contnet
+  toggle para class
+  toggle taskdelete class
+  toggle taskcheckbox class
+  */
+  taskList.appendChild(editInput)
 }
 
 const addItem = e => {
