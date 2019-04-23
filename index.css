@@ -63,6 +63,7 @@ main {
 .list__task {
   flex: 1 1 auto;
   word-break: break-all;
+  transition: opacity 0.3s ease-out;
 }
 
 .list__checkbox {
@@ -87,7 +88,8 @@ main {
 .list__deleteButton {
   visibility: hidden;
   font-size: 3.8rem;
-  color: black;
+  color: red;
+  opacity: 0.6;
   flex-shrink: 0;
 }
 
@@ -104,4 +106,9 @@ main {
 
 .invisible {
   visibility: hidden;
+}
+
+.taskdone {
+    opacity: 0.3;
+    text-decoration: line-through;
 }

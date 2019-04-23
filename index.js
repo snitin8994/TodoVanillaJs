@@ -35,12 +35,14 @@ const appendMultipleChild = (parent, child) => {
 
 const onCheckBoxClick = (e) => {
   let taskCheckBox = e.currentTarget
+  let taskPara = taskCheckBox.nextElementSibling
   let taskTickButton = taskCheckBox.querySelector('.list__tick')
   if (taskCheckBox.dataset.checked === 'true') {
     taskCheckBox.dataset.checked = 'false'
   } else {
     taskCheckBox.dataset.checked = 'true'
   }
+  taskPara.classList.toggle('taskdone')
   taskTickButton.classList.toggle('hide')
 }
 
