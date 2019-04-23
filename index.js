@@ -1,6 +1,21 @@
 const addItemInput = document.querySelector('.additem-input')
 const listContainer = document.querySelector('.list-container')
 
+document.addEventListener('click', (e) => {
+  let element = e.target.closest('.list__edit')
+  if (element) return
+  let editInput = document.querySelector('.list__edit')
+  const taskItem = editInput.parentNode
+  const taskCheckBox = taskItem.querySelector('.list__checkbox')
+  const taskDelete = taskItem.querySelector('.list__deleteButton')
+  const taskPara = taskItem.querySelector('.list__task')
+  taskPara.innerText = editInput.value
+  taskPara.classList.toggle('hide')
+  taskDelete.classList.toggle('hide')
+  taskCheckBox.classList.toggle('invisible')
+  taskItem.removeChild(editInput)
+})
+
 const createDomElement = tag => document.createElement(tag)
 
 const setElementAttibutes = (element, attributes) => {
