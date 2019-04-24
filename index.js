@@ -1,8 +1,9 @@
 const addItemInput = document.querySelector('.additem-input')
 const listContainer = document.querySelector('.list-container')
 const filterContainer = document.querySelector('.filter')
-let tabActive = ''
+let tabActiveContent = ''
 let itemCount = 0
+let activeTabElement
 
 // for outiside clicks when editing list
 const SaveAfterEdit = e => {
@@ -43,10 +44,10 @@ const onCheckBoxClick = (e) => {
   let taskTickButton = taskCheckBox.querySelector('.list__tick')
   if (taskCheckBox.dataset.checked === 'true') {
     taskCheckBox.dataset.checked = 'false'// active task
-    if (tabActive === 'Completed') filter(null, 'Completed')
+    if (tabActiveContent === 'Completed') filter(null, 'Completed', true)
   } else {
     taskCheckBox.dataset.checked = 'true'
-    if (tabActive === 'Active') filter(null, 'Active')
+    if (tabActiveContent === 'Active') filter(null, 'Active', true)
   }
   taskPara.classList.toggle('taskdone')
   taskTickButton.classList.toggle('hide')
@@ -92,9 +93,13 @@ const addTaskFunctionality = (elem, text) => {
     }
   })
 
+  const noteButton = createDomElement('div')
+  noteButton.setAttribute('class', 'note')
+  noteButton.innerText = '+'
+
   elem.addEventListener('dblclick', editItem)
 
-  appendMultipleChild(elem, [taskCheckBox, taskPara, deleteButton])
+  appendMultipleChild(elem, [taskCheckBox, taskPara, noteButton, deleteButton])
 
   return elem
 }
@@ -154,11 +159,17 @@ const addItem = e => {
   if (filterContainer.classList.contains('hide')) filterContainer.classList.remove('hide')
 }
 
-const filter = (e, text) => {
+const filter = (e, text, artificialClick = false) => {
   let buttonContent = text || e.target.textContent
-  tabActive = buttonContent
-  console.log(buttonContent)
+  // for preventing  handler executing clicks on filterContainer
+  if (!text && !e.target.classList.contains('filter__item')) return
+  tabActiveContent = buttonContent
   let childrenArray = Array.from(listContainer.children)
+  if (!artificialClick) {
+    if (activeTabElement) activeTabElement.classList.remove('tabstyle')
+    e.target.classList.add('tabstyle')
+    activeTabElement = e.target
+  }
   switch (buttonContent) {
     case 'All':
       for (let item of childrenArray) {

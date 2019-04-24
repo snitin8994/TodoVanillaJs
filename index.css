@@ -144,3 +144,9 @@ main {
     text-decoration: line-through;
 }
 
+.tabstyle {
+  background-color: rgba(175, 47, 47, 0.4);
+  color: white;
+  border:none;
+}
+
