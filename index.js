@@ -1,5 +1,8 @@
 const addItemInput = document.querySelector('.additem-input')
 const listContainer = document.querySelector('.list-container')
+const filterContainer = document.querySelector('.filter')
+let tabActive = ''
+let itemCount = 0
 
 // for outiside clicks when editing list
 const SaveAfterEdit = e => {
@@ -39,9 +42,11 @@ const onCheckBoxClick = (e) => {
   let taskPara = taskCheckBox.nextElementSibling
   let taskTickButton = taskCheckBox.querySelector('.list__tick')
   if (taskCheckBox.dataset.checked === 'true') {
-    taskCheckBox.dataset.checked = 'false'
+    taskCheckBox.dataset.checked = 'false'// active task
+    if (tabActive === 'Completed') filter(null, 'Completed')
   } else {
     taskCheckBox.dataset.checked = 'true'
+    if (tabActive === 'Active') filter(null, 'Active')
   }
   taskPara.classList.toggle('taskdone')
   taskTickButton.classList.toggle('hide')
@@ -81,6 +86,10 @@ const addTaskFunctionality = (elem, text) => {
 
   deleteButton.addEventListener('click', () => {
     listContainer.removeChild(elem)
+    itemCount--
+    if (itemCount === 0) {
+      filterContainer.classList.add('hide')
+    }
   })
 
   elem.addEventListener('dblclick', editItem)
@@ -141,6 +150,47 @@ const addItem = e => {
   addItemInput.value = ''
   const taskItem = addTaskFunctionality(createDomElement('li'), text)
   listContainer.appendChild(taskItem)
+  itemCount++
+  if (filterContainer.classList.contains('hide')) filterContainer.classList.remove('hide')
 }
+
+const filter = (e, text) => {
+  let buttonContent = text || e.target.textContent
+  tabActive = buttonContent
+  console.log(buttonContent)
+  let childrenArray = Array.from(listContainer.children)
+  switch (buttonContent) {
+    case 'All':
+      for (let item of childrenArray) {
+        console.log(item)
+        if (item.classList.contains('hide')) {
+          item.classList.remove('hide')
+        }
+      }
+      break
+    case 'Active':
+      for (let item of childrenArray) {
+        let checkBox = item.querySelector('.list__checkbox')
+        if (checkBox.dataset.checked === 'true') {
+          item.classList.add('hide')
+        } else {
+          item.classList.remove('hide')
+        }
+      }
+      break
+    case 'Completed':
+      for (let item of childrenArray) {
+        let checkBox = item.querySelector('.list__checkbox')
+        if (checkBox.dataset.checked === 'false') {
+          item.classList.add('hide')
+        } else {
+          item.classList.remove('hide')
+        }
+      }
+      break
+  }
+}
+
+filterContainer.addEventListener('click', filter)
 
 addItemInput.addEventListener('keydown', addItem)

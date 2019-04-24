@@ -52,12 +52,16 @@ main {
   list-style-type: none;
   display: flex;
   font-size: 2.4rem;
-  font-family: "Roboto", sans-serif;
   justify-content: space-between;
   align-items: center;
   border: 0.4rem solid rgba(175, 47, 47, 0.15);
   padding: 1rem;
   margin-bottom: 1rem;
+}
+
+.list__task {
+  font-family: "Roboto", sans-serif
+
 }
 
 .list__task {
@@ -74,6 +78,7 @@ main {
   position: relative;
   margin-right: 1.5rem;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .list__tick {
@@ -91,6 +96,7 @@ main {
   color: red;
   opacity: 0.6;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .list__edit {
@@ -108,6 +114,23 @@ main {
   display: none;
 }
 
+.filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.filter__item {
+  font-size: 2.4rem;
+  padding: 1rem;
+  margin-right: 1rem;
+  border: 2px solid rgba(175, 47, 47, 0.15);
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+
+}
+
 .hide {
   display: none;
 }
@@ -120,3 +143,4 @@ main {
     opacity: 0.3;
     text-decoration: line-through;
 }
+
