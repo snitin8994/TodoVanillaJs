@@ -6,7 +6,7 @@ const SaveAfterEdit = e => {
   let element = e.target.closest('.list__edit')
   if (element) return
   let editInput = document.querySelector('.list__edit')
-  console.log(editInput)
+  if (editInput.value.trim() === '') return
   const taskItem = editInput.parentNode
   const taskCheckBox = taskItem.querySelector('.list__checkbox')
   const taskDelete = taskItem.querySelector('.list__deleteButton')
@@ -16,7 +16,7 @@ const SaveAfterEdit = e => {
   taskDelete.classList.toggle('hide')
   taskCheckBox.classList.toggle('hide')
   taskItem.removeChild(editInput)
-  document.removeEventListener("click", SaveAfterEdit)
+  document.removeEventListener('click', SaveAfterEdit)
 }
 
 const createDomElement = tag => document.createElement(tag)
@@ -93,6 +93,7 @@ const addTaskFunctionality = (elem, text) => {
 const afterEdit = e => {
   if (e.key !== 'Enter') return
   const editInput = e.target
+  if (editInput.value.trim() === '') return
   const taskItem = editInput.parentNode
   const taskCheckBox = taskItem.querySelector('.list__checkbox')
   const taskDelete = taskItem.querySelector('.list__deleteButton')
@@ -102,7 +103,7 @@ const afterEdit = e => {
   taskDelete.classList.toggle('hide')
   taskCheckBox.classList.toggle('hide')
   taskItem.removeChild(editInput)
-  document.removeEventListener("click", SaveAfterEdit)
+  document.removeEventListener('click', SaveAfterEdit)
 }
 
 const editItem = e => {
@@ -125,6 +126,10 @@ const editItem = e => {
   toggle taskcheckbox class
   */
   taskList.appendChild(editInput)
+  editInput.focus()
+  let val = editInput.value // store the value of the element
+  editInput.value = '' // clear the value of the element
+  editInput.value = val
   editInput.addEventListener('keydown', afterEdit)
   document.addEventListener('click', SaveAfterEdit)
 }
