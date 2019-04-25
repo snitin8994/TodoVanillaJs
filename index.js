@@ -188,6 +188,10 @@ const editItem = e => {
   document.addEventListener('click', e => SaveAfterEdit(e, val, editInput))
 }
 
+const addNote = (e) => {
+
+}
+
 const createTaskElement = taskObj => {
   const taskItem = createDomElement('li')
   setElementAttibutes(taskItem, {
@@ -227,14 +231,17 @@ const createTaskElement = taskObj => {
     }
   })
 
-  // const noteButton = createDomElement('div')
-  // noteButton.setAttribute('class', 'note')
-  // noteButton.innerText = '+'
-  // noteButton.addEventListener('click', addNote)
+  const noteButton = createDomElement('div')
+  noteButton.setAttribute('class', 'note')
+  noteButton.innerText = '+'
+  noteButton.addEventListener('click', addNote)
+  const noteModal = createDomElement('div')
+  noteModal.setAttribute('class', 'note__modal hide')
+  noteButton.appendChild(noteModal)
 
   taskItem.addEventListener('dblclick', editItem)
 
-  appendMultipleChild(taskItem, [taskCheckBox, taskPara, deleteButton])
+  appendMultipleChild(taskItem, [taskCheckBox, taskPara, noteButton, deleteButton])
 
   listContainer.appendChild(taskItem)
   itemCount++
@@ -250,6 +257,8 @@ const addItem = e => {
   addItemInput.value = ''
   const taskObj = { text, checked: 'false', id: shortid.generate() }
   createTaskElement(taskObj)
+  // item is added when completed tab is active
+  if (tabActiveContent === 'Completed') filter(null, 'Completed', true)
   addLocalStorageItem(taskObj)
 }
 
@@ -261,6 +270,5 @@ const addItemsFromLocalStorage = () => {
 
 addItemsFromLocalStorage()
 
-// createTaskElement({ text: 'run', id: '6788', checked: 'true' })
 filterContainer.addEventListener('click', filter)
 addItemInput.addEventListener('keydown', addItem)

@@ -91,7 +91,6 @@ main {
 }
 
 .list__deleteButton {
-  visibility: hidden;
   font-size: 3.8rem;
   color: red;
   opacity: 0.6;
@@ -107,12 +106,23 @@ main {
     padding: 1rem;
 }
 
-.list:hover .list__deleteButton {
-  visibility: initial;
+.note {
+  margin-right: 4rem;
+  cursor:pointer;
+  width: 4rem;
+  height:4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size:2.9rem;
+  border-radius: 100%;
+  border: 0.2rem solid black;
 }
-.list:hover .list__deleteButton.hide {
+
+
+/* .list:hover .list__deleteButton.hide {
   display: none;
-}
+} */
 
 .filter {
   display: flex;
@@ -135,9 +145,6 @@ main {
   display: none;
 }
 
-.invisible {
-  visibility: hidden;
-}
 
 .taskdone {
     opacity: 0.3;
