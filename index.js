@@ -125,7 +125,7 @@ const SaveAfterEdit = (e, prevText, editInput) => {
   if (element) return
   if (editInput.value.trim() === '') flag = 1
   const taskItem = editInput.parentNode
-  if(!taskItem) return;
+  if (!taskItem) return
   const taskCheckBox = taskItem.querySelector('.list__checkbox')
   const taskDelete = taskItem.querySelector('.list__deleteButton')
   const taskPara = taskItem.querySelector('.list__task')
