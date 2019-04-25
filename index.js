@@ -2,9 +2,11 @@ const shortid = require('shortid')
 const addItemInput = document.querySelector('.additem-input')
 const listContainer = document.querySelector('.list-container')
 const filterContainer = document.querySelector('.filter')
+const overlay = document.querySelector('.overlay')
 let tabActiveContent = ''
 let itemCount = 0
 let activeTabElement
+let activeModalId
 
 const createDomElement = tag => document.createElement(tag)
 
@@ -53,7 +55,6 @@ const filter = (e, text, artificialClick = false) => {
   switch (buttonContent) {
     case 'All':
       for (let item of childrenArray) {
-        console.log(item)
         if (item.classList.contains('hide')) {
           item.classList.remove('hide')
         }
@@ -124,21 +125,23 @@ const SaveAfterEdit = (e, prevText, editInput) => {
   if (element) return
   if (editInput.value.trim() === '') flag = 1
   const taskItem = editInput.parentNode
+  if(!taskItem) return;
   const taskCheckBox = taskItem.querySelector('.list__checkbox')
   const taskDelete = taskItem.querySelector('.list__deleteButton')
   const taskPara = taskItem.querySelector('.list__task')
+  const taskNoteButton = taskItem.querySelector('.note')
   taskPara.innerText = editInput.value
   if (flag === 1) taskPara.innerText = prevText
   editLocalStorageItem(taskItem.id, 'text', taskPara.innerText)
   taskPara.classList.toggle('hide')
   taskDelete.classList.toggle('hide')
   taskCheckBox.classList.toggle('hide')
+  taskNoteButton.classList.toggle('hide')
   taskItem.removeChild(editInput)
   document.removeEventListener('click', SaveAfterEdit)
 }
 
 const afterEdit = (e, prevText) => {
-  console.log(e)
   let flag = 0
   if (e.key !== 'Enter') return
   const editInput = e.target
@@ -147,12 +150,14 @@ const afterEdit = (e, prevText) => {
   const taskCheckBox = taskItem.querySelector('.list__checkbox')
   const taskDelete = taskItem.querySelector('.list__deleteButton')
   const taskPara = taskItem.querySelector('.list__task')
+  const taskNoteButton = taskItem.querySelector('.note')
   taskPara.innerText = editInput.value
   if (flag === 1) taskPara.innerText = prevText
   editLocalStorageItem(taskItem.id, 'text', taskPara.innerText)
   taskPara.classList.toggle('hide')
   taskDelete.classList.toggle('hide')
   taskCheckBox.classList.toggle('hide')
+  taskNoteButton.classList.toggle('hide')
   taskItem.removeChild(editInput)
   document.removeEventListener('click', SaveAfterEdit)
 }
@@ -163,9 +168,11 @@ const editItem = e => {
   const taskPara = e.target
   const taskCheckBox = taskList.querySelector('.list__checkbox')
   const taskDelete = taskList.querySelector('.list__deleteButton')
+  const taskNoteButton = taskList.querySelector('.note')
   taskPara.classList.toggle('hide')
   taskDelete.classList.toggle('hide')
   taskCheckBox.classList.toggle('hide')
+  taskNoteButton.classList.toggle('hide')
   const editInput = createDomElement('input')
   setElementAttibutes(editInput, {
     class: 'list__edit',
@@ -188,8 +195,88 @@ const editItem = e => {
   document.addEventListener('click', e => SaveAfterEdit(e, val, editInput))
 }
 
-const addNote = (e) => {
+const editNote = (e) => {
+  const modal = e.target.parentNode
+  const editButton = e.target
+  const saveButton = modal.querySelector('.modal__saveButton')
+  const textAreaElement = modal.querySelector('.modal__textarea')
+  const modalPara = modal.querySelector('.modal__text')
+  textAreaElement.classList.remove('hide')
+  textAreaElement.focus()
+  textAreaElement.value = ''
+  textAreaElement.value = modalPara.textContent
+  saveButton.classList.remove('hide')
+  modalPara.classList.add('hide')
+  editButton.classList.add('hide')
+}
 
+const saveNote = (e) => {
+  const modal = e.target.parentNode
+  const taskItem = modal.parentNode.parentNode
+  const saveButton = e.target
+  const editButton = modal.querySelector('.modal__editButton')
+  const textAreaElement = modal.querySelector('.modal__textarea')
+  const modalPara = modal.querySelector('.modal__text')
+  if (textAreaElement.value.trim() === '') return
+  modalPara.textContent = textAreaElement.value
+  editLocalStorageItem(taskItem.id, 'note', modalPara.textContent)
+  textAreaElement.classList.add('hide')
+  saveButton.classList.add('hide')
+  modalPara.classList.remove('hide')
+  editButton.classList.remove('hide')
+}
+
+const addNote = (e) => {
+  const noteButton = e.target
+  // to prevent event handler from executing clicks from its children
+  if (!e.target.classList.contains('note')) return
+  const modal = noteButton.querySelector('.modal')
+  activeModalId = modal.id
+  modal.classList.remove('hide')
+  overlay.classList.remove('hide')
+}
+
+const addNoteModalContent = (noteModal, noteContent) => {
+  let [textAreaClass, saveClass, paraClass, editClass] = ['', '', '', '']
+  if (noteContent === '') {
+    paraClass = 'hide'
+    editClass = 'hide'
+  } else {
+    textAreaClass = 'hide'
+    saveClass = 'hide'
+  }
+  const modalTextArea = createDomElement('textarea')
+  modalTextArea.setAttribute('class', `modal__textarea ${textAreaClass}`)
+  const saveButton = createDomElement('button')
+  saveButton.setAttribute('class', `modal__button modal__saveButton ${saveClass}`)
+  saveButton.textContent = 'SAVE'
+  saveButton.addEventListener('click', saveNote)
+  const editButton = createDomElement('button')
+  editButton.setAttribute('class', `modal__button modal__editButton ${editClass}`)
+  editButton.textContent = 'EDIT'
+  editButton.addEventListener('click', editNote)
+  const modalTextPara = createDomElement('p')
+  if (noteContent !== '') modalTextPara.textContent = noteContent
+  modalTextPara.setAttribute('class', `modal__text ${paraClass}`)
+  appendMultipleChild(noteModal, [modalTextArea, modalTextPara, saveButton, editButton])
+}
+
+const createNoteModal = (noteContent) => {
+  const noteModal = createDomElement('div')
+  noteModal.setAttribute('class', 'modal hide')
+  noteModal.setAttribute('id', shortid.generate())
+  addNoteModalContent(noteModal, noteContent)
+  return noteModal
+}
+
+const createNoteButton = (noteContent) => {
+  const noteButton = createDomElement('div')
+  noteButton.setAttribute('class', 'note')
+  noteButton.innerText = '+'
+  noteButton.addEventListener('click', addNote)
+  const noteModal = createNoteModal(noteContent)
+  noteButton.appendChild(noteModal)
+  return noteButton
 }
 
 const createTaskElement = taskObj => {
@@ -231,13 +318,7 @@ const createTaskElement = taskObj => {
     }
   })
 
-  const noteButton = createDomElement('div')
-  noteButton.setAttribute('class', 'note')
-  noteButton.innerText = '+'
-  noteButton.addEventListener('click', addNote)
-  const noteModal = createDomElement('div')
-  noteModal.setAttribute('class', 'note__modal hide')
-  noteButton.appendChild(noteModal)
+  const noteButton = createNoteButton(taskObj.note)
 
   taskItem.addEventListener('dblclick', editItem)
 
@@ -255,11 +336,18 @@ const addItem = e => {
   let text = addItemInput.value
   if (text.trim() === '') return
   addItemInput.value = ''
-  const taskObj = { text, checked: 'false', id: shortid.generate() }
+  const taskObj = { text, checked: 'false', id: shortid.generate(), note: '' }
   createTaskElement(taskObj)
   // item is added when completed tab is active
   if (tabActiveContent === 'Completed') filter(null, 'Completed', true)
   addLocalStorageItem(taskObj)
+}
+
+const removeModal = (e) => {
+  const modal = document.getElementById(activeModalId)
+  const overlay = e.target
+  modal.classList.add('hide')
+  overlay.classList.add('hide')
 }
 
 const addItemsFromLocalStorage = () => {
@@ -269,6 +357,8 @@ const addItemsFromLocalStorage = () => {
 }
 
 addItemsFromLocalStorage()
+
+overlay.addEventListener('click', removeModal)
 
 filterContainer.addEventListener('click', filter)
 addItemInput.addEventListener('keydown', addItem)
