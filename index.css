@@ -87,6 +87,8 @@ main {
   width: 0.5rem;
   height: 0.5rem;
   color: green;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .list__deleteButton {
@@ -95,6 +97,8 @@ main {
   opacity: 0.6;
   flex-shrink: 0;
   cursor: pointer;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .list__edit {
@@ -111,7 +115,6 @@ main {
   }
 }
 
-
 .note {
   margin-right: 4rem;
   cursor: pointer;
@@ -123,7 +126,10 @@ main {
   align-items: center;
   font-size: 2.9rem;
   border-radius: 100%;
-  border: 0.2rem solid black;
+  border: 0.2rem solid green;
+  user-select: none;
+  -webkit-touch-callout: none;
+  color: green;
 }
 
 @media screen and (max-width: 600px) {
@@ -150,6 +156,8 @@ main {
   border: 2px solid teal;
   cursor: pointer;
   font-family: "Roboto", sans-serif;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .modal {
@@ -183,6 +191,7 @@ main {
   word-break: break-all;
   font-size: 2.4rem;
   font-family: "Roboto", sans-serif;
+  color: black;
   margin: 1rem auto;
 }
 

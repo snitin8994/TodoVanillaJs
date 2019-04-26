@@ -1,5 +1,5 @@
 const shortid = require('shortid')
-const addItemInput = document.querySelector('.additem-input')
+const addTaskItemInput = document.querySelector('.additem-input')
 const listContainer = document.querySelector('.list-container')
 const filterContainer = document.querySelector('.filter')
 const overlay = document.querySelector('.overlay')
@@ -93,6 +93,7 @@ const createTickButton = (elem, checked) => {
   }
   elem.appendChild(tickButton)
 }
+
 const editLocalStorageItem = (id, property, value) => {
   let tasksObj = JSON.parse(localStorage.getItem('tasks'))
   for (let item of tasksObj) {
@@ -211,7 +212,7 @@ const saveNote = (e) => {
   editButton.classList.remove('hide')
 }
 
-const addNote = (e) => {
+const openNoteModal = (e) => {
   const noteButton = e.target
   // to prevent event handler from executing clicks from its children
   if (!e.target.classList.contains('note')) return
@@ -260,27 +261,24 @@ const createNoteButton = (noteContent) => {
   const noteButton = createDomElement('div')
   noteButton.setAttribute('class', 'note')
   noteButton.innerText = '+'
-  noteButton.addEventListener('click', addNote)
+  noteButton.addEventListener('click', openNoteModal)
   const noteModal = createNoteModal(noteContent)
   noteButton.appendChild(noteModal)
   return noteButton
 }
 
-const createTaskElement = taskObj => {
-  const taskItem = createDomElement('li')
-  setElementAttibutes(taskItem, {
-    class: 'list',
-    id: taskObj.id
-  })
+const createTaskCheckBox = (taskObj) => {
   const taskCheckBox = createDomElement('div')
   taskCheckBox.dataset.checked = taskObj.checked
   setElementAttibutes(taskCheckBox, {
     class: 'list__checkbox'
   })
-
   createTickButton(taskCheckBox, taskObj.checked)
-
   taskCheckBox.addEventListener('click', onCheckBoxClick)
+  return taskCheckBox
+}
+
+const createTaskPara = (taskObj) => {
   const taskPara = createDomElement('p')
   taskPara.innerText = taskObj.text
   let taskParaClass = 'list__task'
@@ -288,13 +286,15 @@ const createTaskElement = taskObj => {
   setElementAttibutes(taskPara, {
     class: taskParaClass
   })
+  return taskPara
+}
 
+const createTaskDeleteButton = (taskItem) => {
   const deleteButton = createDomElement('div')
   deleteButton.innerHTML = '&#9747'
   setElementAttibutes(deleteButton, {
     class: 'list__deleteButton'
   })
-
   deleteButton.addEventListener('click', () => {
     deleteLocalStorageItem(taskItem.id)
     listContainer.removeChild(taskItem)
@@ -304,13 +304,21 @@ const createTaskElement = taskObj => {
       filterContainer.classList.add('hide')
     }
   })
+  return deleteButton
+}
 
+const createTaskElement = taskObj => {
+  const taskItem = createDomElement('li')
+  setElementAttibutes(taskItem, {
+    class: 'list',
+    id: taskObj.id
+  })
+  const taskCheckBox = createTaskCheckBox(taskObj)
+  const taskPara = createTaskPara(taskObj)
+  const deleteButton = createTaskDeleteButton(taskItem)
   const noteButton = createNoteButton(taskObj.note)
-
   taskItem.addEventListener('dblclick', editItem)
-
   appendMultipleChild(taskItem, [taskCheckBox, taskPara, noteButton, deleteButton])
-
   listContainer.appendChild(taskItem)
   itemCount++
   if (filterContainer.classList.contains('hide')) {
@@ -318,11 +326,11 @@ const createTaskElement = taskObj => {
   }
 }
 
-const addItem = e => {
+const addTaskItem = e => {
   if (e.key !== 'Enter') return
-  let text = addItemInput.value
+  let text = addTaskItemInput.value
   if (text.trim() === '') return
-  addItemInput.value = ''
+  addTaskItemInput.value = ''
   const taskObj = { text, checked: 'false', id: shortid.generate(), note: '' }
   createTaskElement(taskObj)
   // item is added when completed tab is active
@@ -347,4 +355,4 @@ addItemsFromLocalStorage()
 
 overlay.addEventListener('click', removeModal)
 filterContainer.addEventListener('click', filter)
-addItemInput.addEventListener('keydown', addItem)
+addTaskItemInput.addEventListener('keydown', addTaskItem)
