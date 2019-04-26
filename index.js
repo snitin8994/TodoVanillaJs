@@ -119,13 +119,7 @@ const deleteLocalStorageItem = id => {
   localStorage.setItem('tasks', JSON.stringify(newTaskObj))
 }
 
-const SaveAfterEdit = (e, prevText, editInput) => {
-  let element = e.target.closest('.list__edit')
-  let flag = 0
-  if (element) return
-  if (editInput.value.trim() === '') flag = 1
-  const taskItem = editInput.parentNode
-  if (!taskItem) return
+const saveHelper = (editInput, prevText, taskItem, flag) => {
   const taskCheckBox = taskItem.querySelector('.list__checkbox')
   const taskDelete = taskItem.querySelector('.list__deleteButton')
   const taskPara = taskItem.querySelector('.list__task')
@@ -138,7 +132,16 @@ const SaveAfterEdit = (e, prevText, editInput) => {
   taskCheckBox.classList.toggle('hide')
   taskNoteButton.classList.toggle('hide')
   taskItem.removeChild(editInput)
-  document.removeEventListener('click', SaveAfterEdit)
+}
+
+const SaveAfterEdit = (e, prevText, editInput) => {
+  let element = e.target.closest('.list__edit')
+  let flag = 0
+  if (element) return
+  if (editInput.value.trim() === '') flag = 1
+  const taskItem = editInput.parentNode
+  if (!taskItem) return
+  saveHelper(editInput, prevText, taskItem, flag)
 }
 
 const afterEdit = (e, prevText) => {
@@ -147,19 +150,7 @@ const afterEdit = (e, prevText) => {
   const editInput = e.target
   if (editInput.value.trim() === '') flag = 1
   const taskItem = editInput.parentNode
-  const taskCheckBox = taskItem.querySelector('.list__checkbox')
-  const taskDelete = taskItem.querySelector('.list__deleteButton')
-  const taskPara = taskItem.querySelector('.list__task')
-  const taskNoteButton = taskItem.querySelector('.note')
-  taskPara.innerText = editInput.value
-  if (flag === 1) taskPara.innerText = prevText
-  editLocalStorageItem(taskItem.id, 'text', taskPara.innerText)
-  taskPara.classList.toggle('hide')
-  taskDelete.classList.toggle('hide')
-  taskCheckBox.classList.toggle('hide')
-  taskNoteButton.classList.toggle('hide')
-  taskItem.removeChild(editInput)
-  document.removeEventListener('click', SaveAfterEdit)
+  saveHelper(editInput, prevText, taskItem, flag)
 }
 
 const editItem = e => {
@@ -179,12 +170,6 @@ const editItem = e => {
     value: taskPara.innerText,
     type: 'text'
   })
-
-  //   after edit
-  //   change para contnet
-  //   toggle para class
-  //   toggle taskdelete class
-  //   toggle taskcheckbox class
 
   taskList.appendChild(editInput)
   editInput.focus()
@@ -233,6 +218,8 @@ const addNote = (e) => {
   const modal = noteButton.querySelector('.modal')
   activeModalId = modal.id
   modal.classList.remove('hide')
+  const textarea = modal.querySelector('.modal__textarea')
+  if (!textarea.classList.contains('hide')) textarea.focus()
   overlay.classList.remove('hide')
 }
 
@@ -359,6 +346,5 @@ const addItemsFromLocalStorage = () => {
 addItemsFromLocalStorage()
 
 overlay.addEventListener('click', removeModal)
-
 filterContainer.addEventListener('click', filter)
 addItemInput.addEventListener('keydown', addItem)

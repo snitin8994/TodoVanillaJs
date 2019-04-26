@@ -104,6 +104,13 @@ main {
   font-size: 2.4rem;
   padding: 1rem;
 }
+@media screen and (max-width: 400px) {
+  .list__edit {
+    flex: 0 1 60%;
+    max-width: 330px;
+  }
+}
+
 
 .note {
   margin-right: 4rem;
