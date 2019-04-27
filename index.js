@@ -17,8 +17,9 @@ const setElementAttibutes = (element, attributes) => {
   return element
 }
 
-const appendMultipleChild = (parent, child) => {
-  child.forEach(element => {
+const appendMultipleChild = (...args) => {
+  const parent = args.shift()
+  args.forEach(element => {
     parent.appendChild(element)
   })
 }
@@ -246,7 +247,7 @@ const addNoteModalContent = (noteModal, noteContent) => {
   const modalTextPara = createDomElement('p')
   if (noteContent !== '') modalTextPara.textContent = noteContent
   modalTextPara.setAttribute('class', `modal__text ${paraClass}`)
-  appendMultipleChild(noteModal, [modalTextArea, modalTextPara, saveButton, editButton])
+  appendMultipleChild(noteModal, modalTextArea, modalTextPara, saveButton, editButton)
 }
 
 const createNoteModal = (noteContent) => {
@@ -318,7 +319,7 @@ const createTaskElement = taskObj => {
   const deleteButton = createTaskDeleteButton(taskItem)
   const noteButton = createNoteButton(taskObj.note)
   taskItem.addEventListener('dblclick', editItem)
-  appendMultipleChild(taskItem, [taskCheckBox, taskPara, noteButton, deleteButton])
+  appendMultipleChild(taskItem, taskCheckBox, taskPara, noteButton, deleteButton)
   listContainer.appendChild(taskItem)
   itemCount++
   if (filterContainer.classList.contains('hide')) {

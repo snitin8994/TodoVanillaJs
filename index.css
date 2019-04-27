@@ -184,6 +184,7 @@ main {
   margin: 1rem auto;
   display: block;
   resize: none;
+  /* white-space: pre-wrap; */
 }
 
 .modal__text {
@@ -193,6 +194,7 @@ main {
   font-family: "Roboto", sans-serif;
   color: black;
   margin: 1rem auto;
+  white-space: pre-wrap;
 }
 
 .modal__button {
