@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel index.html",
-    "build": "parcel build index.html"
+    "dev": "webpack-dev-server",
+    "build": "NODE_ENV='production' webpack"
   },
   "repository": {
     "type": "git",
@@ -17,11 +17,17 @@
     "url": "https://github.com/snitin8994/TodoVanillaJs/issues"
   },
   "homepage": "https://github.com/snitin8994/TodoVanillaJs#readme",
-  "devDependencies": {
-    "parcel-bundler": "^1.12.3",
-    "standard": "^12.0.1"
-  },
   "dependencies": {
-    "shortid": "^2.2.14"
+    "css-loader": "^4.2.2",
+    "shortid": "^2.2.14",
+    "style-loader": "^1.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "babel-loader": "^8.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   }
 }

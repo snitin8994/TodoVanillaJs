@@ -1,4 +1,6 @@
-const shortid = require('shortid')
+import shortid from "shortid"
+import "./index.css"
+
 const addTaskItemInput = document.querySelector('.additem-input')
 const listContainer = document.querySelector('.list-container')
 const filterContainer = document.querySelector('.filter')
